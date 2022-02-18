@@ -12,19 +12,20 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($projectId)
     {
-        $tickets = Ticket::with(['project', 'user', 'comments'])->get();
+        $tickets = Ticket::with(['project', 'user', 'comments'])->where('project_id', $projectId)->get();
 
         return response()->json($tickets);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function show($ticketId)
+    {
+        $ticket = Ticket::with(['project', 'user', 'comments'])->where('id', $ticketId)->first();
+
+        return response()->json($ticket);
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -46,25 +47,6 @@ class TicketController extends Controller
         return response()->json($ticket, 201);
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Ticket $ticket)
-    {
-        return response()->json($ticket);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Ticket $ticket)
     {
         $this->validate($request, [

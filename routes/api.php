@@ -21,4 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('projects', ProjectController::class);
-Route::apiResource('tickets', TicketController::class);
+//Route::apiResource('tickets', TicketController::class);
+
+Route::get('/projects/{projectId}/tickets', [TicketController::class, 'index']);
+Route::get('/projects/{projectId}/tickets/{id}', [TicketController::class, 'show']);
+Route::patch('/tickets/{ticket}', [TicketController::class, 'update']);
